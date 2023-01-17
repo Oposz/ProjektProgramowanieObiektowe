@@ -1,10 +1,87 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-</head>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head.html"></head>
 <body>
-<p>:)</p>
+
+<div class="login-wrapper d-flex align-items-center">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="d-flex justify-content-center">
+          <div class="card px-md-5 login-card">
+            <div class="card-body">
+              <h5 class="card-title text-center">Login</h5>
+              <form th:action="@{/login}" method="post">
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-user"></i></span>
+                  </div>
+                  <input type="text" class="form-control" name="username" placeholder="Username" autofocus="autofocus">
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-lock"></i></span>
+                  </div>
+                  <input type="password" class="form-control" name="password" placeholder="Password">
+                </div>
+                <div class="input-group mb-3">
+                  <input type="submit" class="btn btn-block btn-dark" value="Sign in">
+                </div>
+              </form>
+              <div class="text-center">
+                <a href="/register">Register account</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<img src="img/undraw-unlock.svg" class="login-undraw-unlock d-none d-lg-block" alt="login">
+
+<div th:replace="fragments/footer-scripts.html"></div>
+
+<script>
+  (function () {
+    if (window.innerWidth < 992) return;
+
+    const tl = gsap.timeline();
+
+    tl
+        .to('.login-wrapper',
+            {
+              borderWidth: '30px',
+              duration: 1,
+              ease: 'Power1.easeInOut',
+              delay: .25,
+            }
+        )
+        .fromTo('.login-undraw-unlock',
+            {
+              transform: 'translateY(100%)',
+            },
+            {
+              transform: 'translateY(0)',
+              duration: 1,
+              ease: 'Power1.easeInOut',
+            },
+            "-=1",
+        )
+        .fromTo('.login-card',
+            {
+              opacity: 0,
+            },
+            {
+              opacity: 1,
+              duration: 1,
+              ease: 'Power1.easeInOut',
+            },
+            "-=.5",
+        );
+
+  })();
+</script>
+
 </body>
 </html>
