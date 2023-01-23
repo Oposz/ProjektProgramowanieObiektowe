@@ -3,9 +3,11 @@ package com.example.programowanieobiektoweprojekt.models;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 
 @Entity
+@Table(name = "Recipe")
 public class Recipe {
     @Id
     private int id;

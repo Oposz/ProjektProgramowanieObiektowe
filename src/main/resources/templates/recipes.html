@@ -1,0 +1,10 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head.html"></head>
+<body>
+<ul class="list-group">
+    <li th:each="recipe : ${recipes}" class="list-group-item">
+        <p th:text="${recipe.name}"></p>
+    </li>
+</ul>
+</body>
+</html>
