@@ -4,6 +4,10 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.sql.Date;
+import java.time.LocalDateTime;
 
 
 @Entity
@@ -13,6 +17,15 @@ public class Recipe {
     private int id;
     @Column(name = "name")
     private String name;
+    @Column(name = "ownerId")
+    private int ownerId;
+    @Column(name = "createdAt")
+    private LocalDateTime createdAt;
+    @Column(name = "updatedAt")
+    private LocalDateTime updatedAt;
+
+    public Recipe() {
+    }
 
 
     public String getName() {
@@ -29,6 +42,30 @@ public class Recipe {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(int ownerId) {
+        this.ownerId = ownerId;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     @Override
