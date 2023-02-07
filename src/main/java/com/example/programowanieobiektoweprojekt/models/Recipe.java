@@ -1,13 +1,9 @@
 package com.example.programowanieobiektoweprojekt.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import org.springframework.format.annotation.DateTimeFormat;
+import jakarta.persistence.*;
 
-import java.sql.Date;
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Entity
@@ -23,10 +19,27 @@ public class Recipe {
     private LocalDateTime createdAt;
     @Column(name = "updatedAt")
     private LocalDateTime updatedAt;
+    @ManyToMany
+    @JoinTable(
+            name = "_IngredientToRecipe",
+            joinColumns = @JoinColumn(name = "B"),
+            inverseJoinColumns = @JoinColumn(name = "A"))
+    private List<Ingredient> ingredients;
+    @OneToMany
+    @JoinColumn(name = "recipeId")
+    private List<Step> steps;
 
     public Recipe() {
     }
 
+
+    public List<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(List<Ingredient> ingredients) {
+        this.ingredients = ingredients;
+    }
 
     public String getName() {
         return name;
@@ -68,11 +81,24 @@ public class Recipe {
         this.updatedAt = updatedAt;
     }
 
+    public List<Step> getSteps() {
+        return steps;
+    }
+
+    public void setSteps(List<Step> steps) {
+        this.steps = steps;
+    }
+
     @Override
     public String toString() {
         return "Recipe{" +
-                "id='" + id + '\'' +
-                ", name='" + name +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", ownerId=" + ownerId +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", ingredients=" + ingredients +
+                ", steps=" + steps +
                 '}';
     }
 }

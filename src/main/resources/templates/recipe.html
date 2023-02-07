@@ -1,0 +1,20 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head.html"></head>
+<body>
+
+<div class="container">
+  <h2 class="m-0" th:text="${recipe.name}"></h2>
+  <ul class="list-group p-0">
+    <li th:each="ingredient : ${recipe.ingredients}" class="list-group-item d-flex justify-content-between align-items-center">
+      <p class="m-0" th:text="${ingredient.name}"></p>
+    </li>
+  </ul>
+  <ul class="list-group p-0">
+    <li th:each="step : ${recipe.steps}" class="list-group-item d-flex justify-content-between align-items-center">
+      <span th:text="${step.step}+'.'"></span><p class="m-0" th:text="${step.description}"></p>
+    </li>
+  </ul>
+</div>
+<a class="btn btn-primary" href="/recipes-list" role="button">Cofaj się</a>
+</body>
+</html>
