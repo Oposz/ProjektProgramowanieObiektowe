@@ -13,49 +13,48 @@ import java.util.Optional;
 
 
 @CrossOrigin(origins = "http://localhost:8081")
-@Controller
+@Controller('/recipes')
 public class RecipeController {
     @Autowired
     RecipeRepository recipeRepository;
 
-
-    @GetMapping("/recipes-list")
-    public String recipesList(Model model) {
-        List<Recipe> recipes = recipeRepository.findAll();
-        model.addAttribute("recipes", recipes);
-        return "recipes-list";
+    @GetMapping("/")
+    public String recpies(Model model) {
+        model.addAttribute("recipes", recipeRepository.findAll());
+        return "recipes";
     }
 
-    @GetMapping("/recipe-add-template")
-    public String addRecipeRedirect(Model model) {
-        model.addAttribute("recipe", new Recipe());
-        return "recipe-add-template";
-    }
-
-    @GetMapping("/recipe/{id}")
+    @GetMapping("/{id}")
     public String recipe(@PathVariable Integer id, Model model) {
-        Optional<Recipe> recipe = recipeRepository.findById(id);
-        model.addAttribute("recipe", recipe.orElse(null));
+        model.addAttribute("recipe", recipeRepository.findById(id).orElse(null));
         return "recipe";
     }
 
-    @GetMapping("/recipe-edit/{id}")
-    public String recipe(@PathVariable Integer id) {
-//        Optional<Recipe> recipe = recipeRepository.findById(id);
-//        model.addAttribute("recipe", recipe.orElse(null));
-        return "recipe-edit";
+    @PostMapping("/")
+    public String createRecipe(@ModelAttribute Recipe recipe) {
+        var created = recipeRepository.save(recipe);
+        return "redirect:/recipes/" + created.getId();
     }
 
-
-    @PostMapping("/recipe-add")
-    public String recipesList(@ModelAttribute Recipe recipes) {
-        recipeRepository.save(recipes);
-        return "redirect:/recipes-list";
-    }
-
-    @PostMapping("/deleteRecipe")
-    public String deleteRecipe(@RequestParam Integer id) {
+    @PostMapping("/delete/{id}")
+    public String deleteRecipe(@PathVariable Integer id) {
         recipeRepository.deleteById(id);
-        return "redirect:/recipes-list";
+        return "redirect:/recipes";
+    }
+
+    @PostMapping("/add-ingredient/{id}")
+    // TODO: add ingredient to model
+    public String addIngredient(@PathVariable Ingredient id) {
+        // check if ingredient already exists in database
+        // if not, add it and assign to recipe
+        // if yes, assign existing ingredient to recipe
+        return "redirect:/recipes";
+    }
+
+    @PostMapping("/add-step/{id}")
+    // TODO: add step to model
+    public String addStep(@PathVariable Ingredient id) {
+        // create new step and assign to recipe
+        return "redirect:/recipes";
     }
 }
