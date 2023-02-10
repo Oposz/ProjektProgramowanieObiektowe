@@ -221,7 +221,6 @@ public class RecipeController {
             updatedRecipe.addIngredient(ingredient);
             updatedRecipe.removeIngredient(oldIngredient.get());
             recipeRepository.save(updatedRecipe);
-            System.out.println("test");
 
             return "redirect:/recipe-update/" + id;
         }
