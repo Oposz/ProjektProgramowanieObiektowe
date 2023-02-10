@@ -1,0 +1,41 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head.html"></head>
+<body>
+<div class="container">
+  <h2 class="m-0 mt-3 mb-2" th:text="${recipe.name}"></h2>
+  <h5 class="m-0 mb-2">
+    Składniki:
+  </h5>
+  <ul class="list-group p-0 mb-2">
+    <li
+        th:each="ingredient : ${recipe.ingredients}"
+        class="list-group-item d-flex justify-content-between align-items-center"
+    >
+        <form th:action="@{/recipes/update-ingredient/{id}(id=${recipe.id},oldIngredientId=${ingredient.id})}" th:object="${ingredient}" class="m-0 d-flex w-100 justify-content-between" method="post">
+          <input class="m-0 w-75 form-control" required th:value="${ingredient.name}" name="name" id="name">
+          <input type="hidden"  th:field="*{id}">
+          <input type="submit" class="btn btn-block bg-danger text-light" value="Edytuj">
+        </form>
+    </li>
+  </ul>
+  <h5 class="m-0 mb-2">
+    Kroki przygotowania:
+  </h5>
+  <ul class="list-group p-0 mb-4">
+    <li
+        th:each="step : ${recipe.steps}"
+        class="list-group-item d-flex justify-content-between align-items-center"
+    >
+      <form th:action="@{/recipes/update-step/{id}(id=${recipe.id},oldStepId=${step.id})}" th:object="${step}" class="d-flex w-100 m-0 justify-content-between" method="post">
+        <input class="m-0 w-75 form-control" required th:value="${step.description}" name="description" id="description" >
+        <input type="hidden"  th:field="*{id}">
+        <input type="submit" class="btn btn-block bg-danger text-light" value="Edytuj">
+      </form>
+    </li>
+  </ul>
+  <a class="btn btn-dark w-100 mb-2" th:href="@{/recipes/{id}(id=${recipe.id})}" role="button">Dodaj więcej pól</a>
+  <a class="btn btn-primary w-100" th:href="@{/recipes}" role="button">Zapisz i wyjdź</a>
+</div>
+</body>
+
+</html>

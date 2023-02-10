@@ -1,22 +1,14 @@
 package com.example.programowanieobiektoweprojekt.models;
 
 import jakarta.persistence.*;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
-@Table(name = "Ingredient")
-public class Ingredient extends BaseData{
-
+@Table(name = "Tag")
+public class Tag extends BaseData{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
-
-    public Ingredient() {
-    }
 
     public int getId() {
         return id;
@@ -29,7 +21,7 @@ public class Ingredient extends BaseData{
 
     @Override
     public String toString() {
-        return "Ingredient{" +
+        return "Tag{" +
                 "id=" + id +
                 '}';
     }

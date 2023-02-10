@@ -2,25 +2,69 @@
   <head th:replace="fragments/head.html"></head>
   <body>
     <div class="container">
-      <h2 class="m-0" th:text="${recipe.name}"></h2>
-      <ul class="list-group p-0">
+      <h2 class="m-0 mt-3 mb-2" th:text="${recipe.name}"></h2>
+      <h5 class="m-0 mb-2">
+        Składniki:
+      </h5>
+      <ul class="list-group p-0 mb-2">
         <li
           th:each="ingredient : ${recipe.ingredients}"
           class="list-group-item d-flex justify-content-between align-items-center"
         >
-          <p class="m-0" th:text="${ingredient.name}"></p>
+          <span th:text="${ingredient.name}"></span>
+          <form th:action="@{/recipes/remove-ingredient/{id}(id=${recipe.id},ingredientId=${ingredient.id})}" class="m-0" method="post">
+            <input type="submit" class="btn btn-block bg-danger text-light" value="usuń">
+          </form>
         </li>
       </ul>
-      <ul class="list-group p-0">
+      <form th:action="@{/recipes/add-ingredient/{id}(id=${recipe.id})}" th:object="${ingredient}" method="post" class="mb-5">
+        <input type="text" required class="form-control mb-2" th:field="*{name}" placeholder="Nazwa składnika" autofocus="autofocus">
+        <input type="hidden" th:field="*{id}" autofocus="autofocus">
+        <input type="submit" class="btn btn-block btn-dark w-100" value="Dodaj składnik">
+      </form>
+      <h5 class="m-0 mb-2">
+        Instrukcja wykonania:
+      </h5>
+      <ul class="list-group p-0 mb-2">
         <li
           th:each="step : ${recipe.steps}"
           class="list-group-item d-flex justify-content-between align-items-center"
         >
-          <span th:text="${step.step}+'.'"></span>
-          <p class="m-0" th:text="${step.description}"></p>
+          <div class="d-flex">
+            <span class="me-1" th:text="${step.step}+'.'"></span>
+            <p class="m-0" th:text="${step.description}"></p>
+          </div>
+          <form th:action="@{/recipes/remove-step/{id}(id=${recipe.id},stepId=${step.id})}" class="m-0" method="post">
+            <input type="submit" class="btn btn-block bg-danger text-light" value="usuń">
+          </form>
+
         </li>
       </ul>
+      <form th:action="@{/recipes/add-step/{id}(id=${recipe.id})}" th:object="${step}" method="post" class="mb-5">
+        <input type="hidden" th:field="*{id}" autofocus="autofocus">
+        <input type="text" class="form-control mb-2" required th:field="*{description}" placeholder="Opis produktu" autofocus="autofocus">
+        <input type="submit" class="btn btn-block btn-dark w-100" value="Dodaj opis">
+      </form>
+      <h5 class="m-0 mb-2">
+        Tagi:
+      </h5>
+      <ul class="list-group p-0 mb-2">
+        <li
+            th:each="tag : ${recipe.tags}"
+            class="list-group-item d-flex justify-content-between align-items-center"
+        >
+          <button type="button" class="btn btn-outline-secondary" th:text="${tag.name}"></button>
+          <form th:action="@{/recipes/remove-tag/{id}(id=${recipe.id},tagId=${tag.id})}" class="m-0" method="post">
+            <input type="submit" class="btn btn-block bg-danger text-light" value="usuń">
+          </form>
+        </li>
+      </ul>
+      <form th:action="@{/recipes/add-tag/{id}(id=${recipe.id})}" th:object="${tag}" method="post">
+        <input type="hidden" th:field="*{id}" autofocus="autofocus">
+        <input type="text" class="form-control mb-2" required th:field="*{name}" placeholder="Nazwa taga" autofocus="autofocus">
+        <input type="submit" class="btn btn-block btn-dark w-100" value="Dodaj tag">
+      </form>
+      <a class="btn btn-primary mt-5 w-100" href="/recipes" role="button">Zapisz i wyjdź</a>
     </div>
-    <a class="btn btn-primary" href="/recipes" role="button">Cofaj się</a>
   </body>
 </html>

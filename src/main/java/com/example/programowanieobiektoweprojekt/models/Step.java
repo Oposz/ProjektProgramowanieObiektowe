@@ -1,16 +1,14 @@
 package com.example.programowanieobiektoweprojekt.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "RecipeStep")
-public class Step {
+public class Step extends TimeData{
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(name = "step")
     private String step;
@@ -20,6 +18,10 @@ public class Step {
     private LocalDateTime createdAt;
     @Column(name = "updatedAt")
     private LocalDateTime updatedAt;
+
+    public void setRecipeId(int recipeId) {
+        this.recipeId = recipeId;
+    }
 
     public int getId() {
         return id;
@@ -46,30 +48,17 @@ public class Step {
     }
 
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
+    public int getRecipeId() {
+        return recipeId;
     }
 
     @Override
     public String toString() {
         return "Step{" +
                 "id=" + id +
-                ", step='" + step + '\'' +
+                ", step=" + step +
                 ", description='" + description + '\'' +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
+                ", recipeId='" + recipeId + '\'' +
                 '}';
     }
 }
