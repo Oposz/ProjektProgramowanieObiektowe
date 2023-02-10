@@ -250,6 +250,4 @@ public class RecipeController {
         return "redirect:/recipe-update/" + id;
     }
 
-    // TODO:
-    // 8. docs
 }
