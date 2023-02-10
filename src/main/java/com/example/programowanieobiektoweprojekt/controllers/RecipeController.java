@@ -100,9 +100,11 @@ public class RecipeController {
             recipeRepository.save(recipeToUpdate);
             return "redirect:/recipes/" + id;
         }
-        if(existingIngredient.get().getName().equals(ingredient.getName())){
-             return "redirect:/recipes/" + id;
+
+        if (existingRecipe.get().getIngredients().contains(existingIngredient.get())){
+            return "redirect:/recipes/" + id;
         }
+
         recipeToUpdate.addIngredient(existingIngredient.get());
         recipeRepository.save(recipeToUpdate);
         return "redirect:/recipes/" + id;
@@ -159,21 +161,24 @@ public class RecipeController {
 
     @PostMapping("/recipes/add-tag/{id}")
     public String  addTag(@PathVariable Integer id, @ModelAttribute Tag tag) {
-        var recipe = recipeRepository.findById(id).orElse(null);
-        var existingTag = tagRepository.findByNameContaining(tag.getName());
+        var existingRecipe = recipeRepository.findById(id);
+        if (existingRecipe.isEmpty()){
+            return "redirect:/recipes/" + id;
+        }
+        var existingTag = tagRepository.findByName(tag.getName());
         if(existingTag.isEmpty()) {
             tag.setCreatedAt(LocalDateTime.now());
             tag.setUpdatedAt(LocalDateTime.now());
             tagRepository.save(tag);
-            recipe.addTag(tag);
-            recipeRepository.save(recipe);
+            existingRecipe.get().addTag(tag);
+            recipeRepository.save(existingRecipe.get());
             return "redirect:/recipes/" + id;
         }
-        if(existingTag.get().getName().equals(tag.getName())){
+        if (existingRecipe.get().getTags().contains(existingTag.get())){
             return "redirect:/recipes/" + id;
         }
-        recipe.addTag( existingTag.get());
-        recipeRepository.save(recipe);
+        existingRecipe.get().addTag(existingTag.get());
+        recipeRepository.save(existingRecipe.get());
         return "redirect:/recipes/" + id;
     }
 
