@@ -225,6 +225,9 @@ public class RecipeController {
 
             return "redirect:/recipe-update/" + id;
         }
+        if(existingRecipe.get().getIngredients().contains(existingIngredient.get())){
+            return "redirect:/recipe-update/" + id;
+        }
         updatedRecipe.removeIngredient(oldIngredient.get());
         updatedRecipe.addIngredient(existingIngredient.get());
 
