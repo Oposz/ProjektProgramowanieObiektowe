@@ -206,10 +206,10 @@ public class RecipeController {
         var existingRecipe = recipeRepository.findById(id);
         var oldIngredient = ingredientRepository.findById(oldIngredientId);
         if (oldIngredient.isEmpty()) {
-            return "redirect:/recipes/" + id;
+            return "redirect:/recipe-update/" + id;
         }
         if (existingRecipe.isEmpty()) {
-            return "redirect:/recipes/" + id;
+            return "redirect:/recipe-update/" + id;
         }
         var updatedRecipe = existingRecipe.get();
 
@@ -229,7 +229,7 @@ public class RecipeController {
         updatedRecipe.addIngredient(existingIngredient.get());
 
         recipeRepository.save(updatedRecipe);
-        return "redirect:/recipes/" + id;
+        return "redirect:/recipe-update/" + id;
     }
 
     @PostMapping("/recipes/update-step/{id}")
@@ -240,7 +240,7 @@ public class RecipeController {
     ) {
         var oldStep = stepRepository.findById(oldStepId);
         if (oldStep.isEmpty()) {
-            return "redirect:/recipes/" + id;
+            return "redirect:/recipe-update/" + id;
         }
         var existingStep = stepRepository.findById(oldStepId);
         var existingStepData = existingStep.get();
