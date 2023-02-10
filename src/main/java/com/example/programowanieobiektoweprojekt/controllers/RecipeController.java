@@ -6,6 +6,8 @@ import com.example.programowanieobiektoweprojekt.models.Step;
 import com.example.programowanieobiektoweprojekt.models.Tag;
 import com.example.programowanieobiektoweprojekt.repositories.IngredientRepository;
 import com.example.programowanieobiektoweprojekt.repositories.RecipeRepository;
+import com.example.programowanieobiektoweprojekt.repositories.StepRepository;
+import com.example.programowanieobiektoweprojekt.repositories.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Controller;
@@ -32,6 +34,7 @@ public class RecipeController {
         model.addAttribute("recipes", recipeRepository.findAll());
         return "recipes";
     }
+
 
     @GetMapping("/recipes/{id}")
     public String recipe(@PathVariable Integer id, Model model) {
@@ -65,6 +68,9 @@ public class RecipeController {
 
     @PostMapping("/recipes/add")
     public String createRecipe(@ModelAttribute Recipe recipe) {
+        System.out.println(recipe);
+        recipe.setCreatedAt(LocalDateTime.now());
+        recipe.setUpdatedAt(LocalDateTime.now());
         var created = recipeRepository.save(recipe);
         return "redirect:/recipes/" + created.getId();
     }
@@ -103,6 +109,41 @@ public class RecipeController {
 
     }
 
+    @PostMapping("/recipes/remove-ingredient/{id}")
+    public String removeIngredient(@PathVariable Integer id, @RequestParam Integer ingredientId) {
+        var existingIngredient = ingredientRepository.findById(ingredientId);
+        var existingRecipe = recipeRepository.findById(id);
+
+        if (existingIngredient.isEmpty()) {
+            return "redirect:/recipes/" + id;
+        }
+        if (existingRecipe.isEmpty()) {
+            return "redirect:/recipes/" + id;
+        }
+        existingRecipe.get().removeIngredient(existingIngredient.get());
+        recipeRepository.save(existingRecipe.get());
+        return "redirect:/recipes/" + id;
+    }
+
+
+
+    @PostMapping("/recipes/remove-tag/{id}")
+    public String removeTag(@PathVariable Integer id, @RequestParam Integer tagId) {
+        var existingTag = tagRepository.findById(tagId);
+        var existingRecipe = recipeRepository.findById(id);
+
+        if (existingTag.isEmpty()) {
+            return "redirect:/recipes/" + id;
+        }
+        if (existingRecipe.isEmpty()) {
+            return "redirect:/recipes/" + id;
+        }
+        existingRecipe.get().removeTag(existingTag.get());
+        recipeRepository.save(existingRecipe.get());
+        return "redirect:/recipes/" + id;
+    }
+
+
     @PostMapping("/recipes/add-step/{id}")
     public String addStep(@PathVariable Integer id, @ModelAttribute Step step) {
         var recipe = recipeRepository.findById(id).orElse(null);
@@ -114,6 +155,94 @@ public class RecipeController {
         recipe.addStep(step);
         recipeRepository.save(recipe);
         return "redirect:/recipes/" + id;
+    }
+
+    @PostMapping("/recipes/add-tag/{id}")
+    public String  addTag(@PathVariable Integer id, @ModelAttribute Tag tag) {
+        var recipe = recipeRepository.findById(id).orElse(null);
+        var existingTag = tagRepository.findByNameContaining(tag.getName());
+        if(existingTag.isEmpty()) {
+            tag.setCreatedAt(LocalDateTime.now());
+            tag.setUpdatedAt(LocalDateTime.now());
+            tagRepository.save(tag);
+            recipe.addTag(tag);
+            recipeRepository.save(recipe);
+            return "redirect:/recipes/" + id;
+        }
+        if(existingTag.get().getName().equals(tag.getName())){
+            return "redirect:/recipes/" + id;
+        }
+        recipe.addTag( existingTag.get());
+        recipeRepository.save(recipe);
+        return "redirect:/recipes/" + id;
+    }
+
+
+
+    @PostMapping("/recipes/remove-step/{id}")
+    public String removeStep(@PathVariable Integer id, @RequestParam Integer stepId) {
+        stepRepository.deleteById(stepId);
+        var recipe = recipeRepository.findById(id).orElse(null);
+        var steps = recipe.getSteps();
+        for (int i = 0; i < steps.size(); i++) {
+            steps.get(i).setStep(i + 1);
+        }
+        recipe.setSteps(steps);
+        recipeRepository.save(recipe);
+        return "redirect:/recipes/" + id;
+    }
+
+    @PostMapping("/recipes/update-ingredient/{id}")
+    public String updateIngredient(
+            @PathVariable Integer id,
+            @ModelAttribute Ingredient ingredient,
+            @RequestParam Integer oldIngredientId
+    ) {
+        var existingRecipe = recipeRepository.findById(id);
+        var oldIngredient = ingredientRepository.findById(oldIngredientId);
+        if (oldIngredient.isEmpty()) {
+            return "redirect:/recipes/" + id;
+        }
+        if (existingRecipe.isEmpty()) {
+            return "redirect:/recipes/" + id;
+        }
+        var updatedRecipe = existingRecipe.get();
+
+        var existingIngredient = ingredientRepository.findByName(ingredient.getName());
+        if (existingIngredient.isEmpty()) {
+            ingredient.setCreatedAt(LocalDateTime.now());
+            ingredient.setUpdatedAt(LocalDateTime.now());
+            ingredientRepository.save(ingredient);
+            updatedRecipe.addIngredient(ingredient);
+            updatedRecipe.removeIngredient(oldIngredient.get());
+            recipeRepository.save(updatedRecipe);
+            System.out.println("test");
+
+            return "redirect:/recipe-update/" + id;
+        }
+        updatedRecipe.removeIngredient(oldIngredient.get());
+        updatedRecipe.addIngredient(existingIngredient.get());
+
+        recipeRepository.save(updatedRecipe);
+        return "redirect:/recipes/" + id;
+    }
+
+    @PostMapping("/recipes/update-step/{id}")
+    public String updateStep(
+            @PathVariable Integer id,
+            @ModelAttribute Step step,
+            @RequestParam Integer oldStepId
+    ) {
+        var oldStep = stepRepository.findById(oldStepId);
+        if (oldStep.isEmpty()) {
+            return "redirect:/recipes/" + id;
+        }
+        var existingStep = stepRepository.findById(oldStepId);
+        var existingStepData = existingStep.get();
+        existingStepData.setRecipeId(id);
+        existingStep.get().setDescription(step.getDescription());
+        stepRepository.save(existingStep.get());
+        return "redirect:/recipe-update/" + id;
     }
 
     // TODO:

@@ -13,23 +13,38 @@ public class Recipe extends BaseData{
     private int id;
     @Column(name = "ownerId")
     private int ownerId;
-    @Column(name = "createdAt")
-    private LocalDateTime createdAt;
-    @Column(name = "updatedAt")
-    private LocalDateTime updatedAt;
-    @ManyToMany
+    @ManyToMany(cascade = {
+            CascadeType.PERSIST,
+    })
     @JoinTable(
             name = "_IngredientToRecipe",
             joinColumns = @JoinColumn(name = "B"),
-            inverseJoinColumns = @JoinColumn(name = "A"))
+            inverseJoinColumns = @JoinColumn(name = "A")
+    )
     private List<Ingredient> ingredients;
-    @OneToMany
+    @ManyToMany(cascade = {
+            CascadeType.PERSIST,
+    })
+    @JoinTable(
+            name = "_RecipeToTag",
+            joinColumns = @JoinColumn(name = "A"),
+            inverseJoinColumns = @JoinColumn(name = "B")
+    )
+    private List<Tag> tags;
+    @OneToMany(cascade=CascadeType.ALL)
     @JoinColumn(name = "recipeId")
     private List<Step> steps;
 
     public Recipe() {
     }
 
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
+    }
 
     public List<Ingredient> getIngredients() {
         return ingredients;
@@ -37,6 +52,13 @@ public class Recipe extends BaseData{
 
     public void setIngredients(List<Ingredient> ingredients) {
         this.ingredients = ingredients;
+    }
+    public void addTag(Tag tag) {
+        this.tags.add(tag);
+    }
+
+    public void removeTag(Tag tag) {
+        this.tags.remove(tag);
     }
 
     public void addIngredient(Ingredient ingredient) {
@@ -89,6 +111,7 @@ public class Recipe extends BaseData{
                 ", ownerId=" + ownerId +
                 ", ingredients=" + ingredients +
                 ", steps=" + steps +
+                ", tags=" + tags +
                 '}';
     }
 }

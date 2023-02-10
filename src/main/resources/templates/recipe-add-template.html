@@ -1,36 +1,17 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/head.html"></head>
 <body>
-
-<form th:action="@{/recipes/add}" th:object="${recipe}" method="post">
-  <div class="input-group mb-3">
-    <div class="input-group-prepend">
-      <span class="input-group-text"><i class="fa fa-user"></i></span>
-    </div>
-    <input type="text" class="form-control" th:field="*{name}" placeholder="Username" autofocus="autofocus">
+<form th:action="@{/recipes/add}" th:object="${recipe}" method="post" class="p-5 d-flex justify-content-center align-items-center flex-column h-100 container m-auto">
+  <h1 class="text-center">Dodaj nazwe dla swojego przepisu</h1>
+  <div class="input-group mb-3 mt-5">
+    <input type="text" class="form-control" th:field="*{name}" placeholder="Nazwa przepisu" autofocus="autofocus" required>
   </div>
   <div class="input-group mb-3">
-    <div class="input-group-prepend">
-      <span class="input-group-text"><i class="fa fa-user"></i></span>
-    </div>
-    <input type="number" class="form-control" th:field="*{ownerId}" placeholder="OwnerId" autofocus="autofocus">
+    <input type="hidden" class="form-control" th:value="1" name="ownerId" id="ownerId"  placeholder="OwnerId" autofocus="autofocus">
   </div>
-  <div class="input-group mb-3">
-    <div class="input-group-prepend">
-      <span class="input-group-text"><i class="fa fa-user"></i></span>
-    </div>
-    <input type="datetime-local" class="form-control" th:field="*{createdAt}" placeholder="createdAt"
-           autofocus="autofocus">
-  </div>
-  <div class="input-group mb-3">
-    <div class="input-group-prepend">
-      <span class="input-group-text"><i class="fa fa-user"></i></span>
-    </div>
-    <input type="datetime-local" class="form-control" th:field="*{updatedAt}" placeholder="updatedAt"
-           autofocus="autofocus">
-  </div>
-  <div class="input-group mb-3">
-    <input type="submit" class="btn btn-block btn-dark" value="Create account">
+  <div class="d-flex justify-content-between w-100">
+    <a href="/recipes" type="submit" class="btn btn-block btn-dark text-center" >Strona główna</a>
+    <button type="submit" class="btn btn-block btn-dark text-center">Przejdź do następnego kroku</button>
   </div>
 </form>
 </body>

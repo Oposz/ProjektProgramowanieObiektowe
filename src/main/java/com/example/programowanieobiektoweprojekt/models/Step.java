@@ -11,13 +11,11 @@ public class Step extends TimeData{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(name = "step")
-    private String step;
+    private int step;
     @Column(name = "description")
-    private String description;
-    @Column(name = "createdAt")
-    private LocalDateTime createdAt;
-    @Column(name = "updatedAt")
-    private LocalDateTime updatedAt;
+    private String description ;
+    @Column(name = "recipeId")
+    private int recipeId;
 
     public void setRecipeId(int recipeId) {
         this.recipeId = recipeId;
@@ -31,11 +29,11 @@ public class Step extends TimeData{
         this.id = id;
     }
 
-    public String getStep() {
+    public int getStep() {
         return step;
     }
 
-    public void setStep(String step) {
+    public void setStep(int step) {
         this.step = step;
     }
 
