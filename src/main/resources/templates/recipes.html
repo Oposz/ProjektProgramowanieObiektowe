@@ -1,0 +1,24 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head.html"></head>
+<body>
+<div class="container">
+  <div class="row mb-2 mt-2">
+    <a class="btn btn-primary" href="/recipe-add-template" role="button">Dodaj przepis</a>
+  </div>
+  <div class="row">
+    <ul class="list-group p-0">
+      <li th:each="recipe : ${recipes}" class="list-group-item d-flex justify-content-between align-items-center">
+        <p class="m-0" th:text="${recipe.name}"></p>
+        <div class="d-flex align-items-center">
+          <a class="btn btn-primary me-2" th:href="@{/recipe-preview/{id}(id=${recipe.id})}" role="button">Zobacz przepis</a>
+          <a class="btn btn-primary me-2" th:href="@{/recipe-update/{id}(id=${recipe.id})}" role="button">Edytuj przepis</a>
+          <form th:action="@{/recipes/delete/{id}(id=${recipe.id})}" method="post" class="m-0">
+            <button type="submit" class="btn btn-block bg-danger text-light">Usuń</button>
+          </form>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+</body>
+</html>

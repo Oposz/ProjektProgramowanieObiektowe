@@ -1,0 +1,44 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head.html">
+
+</head>
+<body>
+<div class="container">
+  <h2 class="m-0 text-center p-3" th:text="${recipe.name}"></h2>
+  <h1 class="display-3 mt-3" >Składniki</h1>
+  <ul class="list-group p-0 mt-3 " >
+    <li
+        th:each="ingredient : ${recipe.ingredients}"
+        class="list-group-item d-flex justify-content-between align-items-center list-group-item list-group-item-primary"
+    >
+      <p class="m-0" th:text="${ingredient.name}"></p>
+    </li>
+  </ul>
+  <h1 class="display-3 mt-3" >Instrukcja</h1>
+  <ul class="list-group p-0 mt-2">
+    <li
+        th:each="step : ${recipe.steps}"
+        class="list-group-item d-flex justify-content-between align-items-center mt-3"
+    >
+      <div class="jumbotron jumbotron-fluid ">
+        <div class="container">
+          <h1 class="display-3" th:text="${step.step}"></h1>
+          <p class="lead" th:text="${step.description}">This is a modified jumbotron that occupies the entire horizontal space of its parent.</p>
+        </div>
+      </div>
+    </li>
+  </ul>
+  <h1 class="display-3 mt-3" >Tagi</h1>
+  <ul class="p-0 mt-2 d-flex align-items-center flex-wrap" style="list-style: none">
+    <li
+        th:each="tag : ${recipe.tags}"
+        class=" m-2"
+    >
+      <button type="button" class="btn btn-outline-secondary" th:text="${tag.name}"></button>
+    </li>
+  </ul>
+
+  <a href="/recipes" type="submit" class="btn btn-block btn-dark text-center mt-3 w-100" >Strona główna</a>
+</div>
+</body>
+</html>

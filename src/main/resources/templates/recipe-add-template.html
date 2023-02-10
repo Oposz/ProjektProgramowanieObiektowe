@@ -1,0 +1,37 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head.html"></head>
+<body>
+
+<form th:action="@{/recipes/add}" th:object="${recipe}" method="post">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text"><i class="fa fa-user"></i></span>
+    </div>
+    <input type="text" class="form-control" th:field="*{name}" placeholder="Username" autofocus="autofocus">
+  </div>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text"><i class="fa fa-user"></i></span>
+    </div>
+    <input type="number" class="form-control" th:field="*{ownerId}" placeholder="OwnerId" autofocus="autofocus">
+  </div>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text"><i class="fa fa-user"></i></span>
+    </div>
+    <input type="datetime-local" class="form-control" th:field="*{createdAt}" placeholder="createdAt"
+           autofocus="autofocus">
+  </div>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text"><i class="fa fa-user"></i></span>
+    </div>
+    <input type="datetime-local" class="form-control" th:field="*{updatedAt}" placeholder="updatedAt"
+           autofocus="autofocus">
+  </div>
+  <div class="input-group mb-3">
+    <input type="submit" class="btn btn-block btn-dark" value="Create account">
+  </div>
+</form>
+</body>
+</html>

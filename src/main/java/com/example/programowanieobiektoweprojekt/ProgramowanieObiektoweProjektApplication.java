@@ -9,5 +9,4 @@ public class ProgramowanieObiektoweProjektApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ProgramowanieObiektoweProjektApplication.class, args);
 	}
-
 }
